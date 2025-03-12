@@ -3,22 +3,22 @@ using DongTaBhxh.Domain.Models.EmployeeDb;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace DongTaBhxh.ApiGateway.Controllers;
+namespace DongTaBhxh.ApiGateway.Controllers.HumanApi;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class QuarterEmployeeRanksController(DongTaBhxhDbContext context) : ControllerBase {
 
     // GET: api/QuarterEmployeeRanks
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<QuarterEmployeeRank>>> GetQuarterEmployeeRanks()
+    [HttpGet("All")]
+    public async Task<ActionResult<IEnumerable<QuarterEmployeeRank>>> All()
     {
         return await context.QuarterEmployeeRanks.ToListAsync();
     }
 
     // GET: api/QuarterEmployeeRanks/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<QuarterEmployeeRank>> GetQuarterEmployeeRank(int id)
+    [HttpGet("GetOne/{id}")]
+    public async Task<ActionResult<QuarterEmployeeRank>> GetOne(int id)
     {
         var quarterEmployeeRank = await context.QuarterEmployeeRanks.FindAsync(id);
 
@@ -32,8 +32,8 @@ public class QuarterEmployeeRanksController(DongTaBhxhDbContext context) : Contr
 
     // PUT: api/QuarterEmployeeRanks/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutQuarterEmployeeRank(int id, QuarterEmployeeRank quarterEmployeeRank)
+    [HttpPut("Update/{id}")]
+    public async Task<IActionResult> Update(int id, QuarterEmployeeRank quarterEmployeeRank)
     {
         if (id != quarterEmployeeRank.QuarterEmployeeRankId)
         {
@@ -63,8 +63,8 @@ public class QuarterEmployeeRanksController(DongTaBhxhDbContext context) : Contr
 
     // POST: api/QuarterEmployeeRanks
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
-    public async Task<ActionResult<QuarterEmployeeRank>> PostQuarterEmployeeRank(QuarterEmployeeRank quarterEmployeeRank)
+    [HttpPost("Add")]
+    public async Task<ActionResult<QuarterEmployeeRank>> Add(QuarterEmployeeRank quarterEmployeeRank)
     {
         context.QuarterEmployeeRanks.Add(quarterEmployeeRank);
         try
@@ -87,8 +87,8 @@ public class QuarterEmployeeRanksController(DongTaBhxhDbContext context) : Contr
     }
 
     // DELETE: api/QuarterEmployeeRanks/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteQuarterEmployeeRank(int id)
+    [HttpDelete("Delete/{id}")]
+    public async Task<IActionResult> Delete(int id)
     {
         var quarterEmployeeRank = await context.QuarterEmployeeRanks.FindAsync(id);
         if (quarterEmployeeRank == null)

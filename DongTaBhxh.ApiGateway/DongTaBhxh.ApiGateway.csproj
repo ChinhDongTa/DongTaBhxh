@@ -16,6 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\DongTa Library\DongTa.ResponseResult\DongTa.ResponseResult.csproj" />
+    <ProjectReference Include="..\DongTaBhxh.DataTranfer\DongTaBhxh.DataTranfer.csproj" />
     <ProjectReference Include="..\DongTaBhxh.Domain\DongTaBhxh.Domain.csproj" />
   </ItemGroup>
 

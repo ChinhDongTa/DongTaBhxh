@@ -3,15 +3,15 @@ using DongTaBhxh.Domain.Models.EmployeeDb;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace DongTaBhxh.ApiGateway.Controllers;
+namespace DongTaBhxh.ApiGateway.Controllers.HumanApi;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class QuarterDepartmentRanksController(DongTaBhxhDbContext context) : ControllerBase {
 
     // GET: api/QuarterDepartmentRanks
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<QuarterDepartmentRank>>> GetQuarterDepartmentRanks()
+    [HttpGet("All")]
+    public async Task<ActionResult<IEnumerable<QuarterDepartmentRank>>> All()
     {
         return await context.QuarterDepartmentRanks.ToListAsync();
     }
