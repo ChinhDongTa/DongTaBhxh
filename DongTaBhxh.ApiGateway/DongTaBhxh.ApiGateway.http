@@ -1,0 +1,6 @@
+@DongTaBhxh.ApiGateway_HostAddress = http://localhost:5206
+
+GET {{DongTaBhxh.ApiGateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

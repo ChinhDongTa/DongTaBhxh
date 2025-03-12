@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DongTaBhxh.Domain\DongTaBhxh.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ErpBhxhGiaLai.DataAccess">
+      <HintPath>..\..\ErpBhxhGiaLai\ErpBhxhGiLai.DataAccess\bin\Release\net9.0\ErpBhxhGiaLai.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="ErpBhxhGiaLai.Domain">
+      <HintPath>..\..\ErpBhxhGiaLai\ErpBhxhGiLai.DataAccess\bin\Release\net9.0\ErpBhxhGiaLai.Domain.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
