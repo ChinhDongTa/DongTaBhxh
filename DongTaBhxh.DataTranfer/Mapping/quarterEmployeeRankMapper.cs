@@ -3,7 +3,7 @@ using DongTaBhxh.Domain.Models.EmployeeDb;
 
 namespace DongTaBhxh.DataTranfer.Mapping;
 
-public static class quarterEmployeeRankMapper {
+public static class QuarterEmployeeRankMapper {
 
     public static QuarterEmployeeRankDto ToDto(this QuarterEmployeeRank quarterEmployeeRank)
     {

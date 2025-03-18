@@ -5,6 +5,7 @@ using DongTaBhxh.Domain.Models.EmployeeDb;
 using DongTaBhxh.DataTranfer.Mapping;
 using DongTa.ResponseResult;
 using DongTaBhxh.DataTranfer.Dtos;
+using DongTaBhxh.StringDefault;
 
 namespace DongTaBhxh.ApiGateway.Controllers.HumanApi;
 
@@ -18,6 +19,7 @@ public class EmployeesController(DongTaBhxhDbContext context) : ControllerBase {
     {
         return Ok(ResultExtension.GetResult(
             await context.Employees.Where(x => x.IsQuitJob == false)
+            .Include(x => x.SalaryCoefficient).Include(x => x.Dept).Include(x => x.Post)
                                     .OrderBy(x => x.SortOrder).ThenBy(x => x.Birthdate)
                                    .Select(x => x.ToDto()).ToListAsync())
             );
@@ -26,18 +28,22 @@ public class EmployeesController(DongTaBhxhDbContext context) : ControllerBase {
     [HttpGet("FindByName/{name}/{quitJob}")]
     public async Task<IActionResult> FindByName(string name, bool quitJob = false)
     {
-        if (quitJob)
-        {
-            return Ok(ResultExtension.GetResult(
-            await context.Employees.Where(x => x.IsQuitJob == true && (x.FirstName.Contains(name) || x.LastName.Contains(name)))
-                                    .OrderBy(x => x.SortOrder).ThenBy(x => x.Birthdate)
-                                   .Select(x => x.ToDto()).ToListAsync())
-            );
-        }
-        return Ok(ResultExtension.GetResult(
-            await context.Employees.Where(x => x.FirstName.Contains(name) || x.LastName.Contains(name))
-                                    .OrderBy(x => x.SortOrder).ThenBy(x => x.Birthdate)
-                                   .Select(x => x.ToDto()).ToListAsync())
+        return quitJob
+            ? Ok(ResultExtension.GetResult(await context.Employees
+                    .Where(x => x.FirstName.Contains(name) || x.LastName.Contains(name))
+                    .Include(x => x.SalaryCoefficient)
+                    .Include(x => x.Dept)
+                    .Include(x => x.Post)
+                    .OrderBy(x => x.SortOrder).ThenBy(x => x.Birthdate)
+                    .Select(x => x.ToDto()).ToListAsync())
+            )
+            : Ok(ResultExtension.GetResult(await context.Employees
+                    .Where(x => x.IsQuitJob == false && (x.FirstName.Contains(name) || x.LastName.Contains(name)))
+                    .Include(x => x.SalaryCoefficient)
+                    .Include(x => x.Dept)
+                    .Include(x => x.Post)
+                    .OrderBy(x => x.SortOrder).ThenBy(x => x.Birthdate)
+                    .Select(x => x.ToDto()).ToListAsync())
             );
     }
 
@@ -45,8 +51,20 @@ public class EmployeesController(DongTaBhxhDbContext context) : ControllerBase {
     [HttpGet("GetOne/{id}")]
     public async Task<IActionResult> GetOne(int id)
     {
-        var employee = await context.Employees.FindAsync(id);
+        var employee = await context.Employees.Include(x => x.SalaryCoefficient)
+            .Include(x => x.Dept).Include(x => x.Post)
+                                .FirstOrDefaultAsync(x => x.EmployeeId == id);
+
         return Ok(ResultExtension.GetResult(employee?.ToDto()));
+    }
+
+    [HttpGet("GetEmployeeDto")]
+    public async Task<IActionResult> GetEmployeeDto()
+    {
+        var dto = await context.Database.SqlQuery<EmployeeDto>(SqlQueryString.SelectEmployeeDto).ToListAsync();
+        //FormattableString query = ;
+
+        return Ok(ResultExtension.GetResult(dto));
     }
 
     [HttpGet("GetByDeptId/{deptId}")]
@@ -54,9 +72,24 @@ public class EmployeesController(DongTaBhxhDbContext context) : ControllerBase {
     {
         return Ok(ResultExtension.GetResult(
             await context.Employees.Where(x => x.DeptId == deptId && x.IsQuitJob == false)
+                                    .Include(x => x.SalaryCoefficient).Include(x => x.Dept).Include(x => x.Post)
                                     .OrderBy(x => x.SortOrder).ThenBy(x => x.Birthdate)
                                     .Select(x => x.ToDto()).ToListAsync())
             );
+    }
+
+    [HttpGet("GetEmployeeDtoForListBox")]
+    public async Task<IActionResult> GetEmployeeDtoForListBox()
+    {
+        var result = await context.Employees.Where(s => s.IsQuitJob == false)
+            .Include(s => s.Dept)
+            .AsSplitQuery()
+            .OrderBy(s => s.DeptId).ThenBy(s => s.SortOrder).ThenBy(s => s.LastName)
+            .Select(s => new EmployeeDtoForListBox(s.EmployeeId, $"{s.FirstName} {s.LastName}-{s.Dept!.ShortName}"))
+            .ToListAsync();
+        //FormattableString query = ;
+
+        return Ok(ResultExtension.GetResult(result));
     }
 
     // PUT: api/Employees/5

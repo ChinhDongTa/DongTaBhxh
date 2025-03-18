@@ -21,12 +21,13 @@ public static class EmployeeMapper {
             PositionName = employee.Post?.Name,
             Address = employee.Address,
             SalaryCoefficientId = employee.SalaryCoefficientId,
-            Salary = employee.SalaryCoefficient?.Name,
+            Salary = employee.SalaryCoefficient?.Description,
             AccountBank = employee.AccountBank,
             IdentityCard = employee.IdentityCard,
             SortOrder = employee.SortOrder,
             IsQuitJob = employee.IsQuitJob,
             TelegramId = employee.TelegramId,
+            Gender = employee.Gender,
         };
     }
 
@@ -51,6 +52,7 @@ public static class EmployeeMapper {
                 SortOrder = dto.SortOrder,
                 IsQuitJob = dto.IsQuitJob,
                 TelegramId = dto.TelegramId,
+                Gender = dto.Gender,
             };
         }
         employee.FirstName = dto.FirstName;
@@ -67,6 +69,7 @@ public static class EmployeeMapper {
         employee.SortOrder = dto.SortOrder;
         employee.IsQuitJob = dto.IsQuitJob;
         employee.TelegramId = dto.TelegramId;
+        employee.Gender = dto.Gender;
         return employee;
     }
 }

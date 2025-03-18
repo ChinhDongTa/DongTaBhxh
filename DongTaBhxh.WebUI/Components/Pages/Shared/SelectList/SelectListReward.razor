@@ -1,0 +1,67 @@
+﻿@inject IBaseHttpClient client;
+@rendermode InteractiveServer
+
+
+@if (items.HasItems())
+{
+    <FluentSelect Items="@items"
+                  @onchange="ItemChangedHandle"
+                  OptionValue="@(x=>x!.RewardId.ToString())"
+                  OptionText="@(x=>x!.Name)"
+                  SelectedOption="@Item"
+                  Label="@Label" />
+}
+else
+{
+    <FluentProgressRing />
+}
+@code {
+    [Parameter]
+    public int? DefaultId { get; set; }
+
+    private RewardDto? item;
+
+    [Parameter]
+    public required RewardDto Item
+    {
+        get
+        {
+            return item ?? new RewardDto();
+        }
+        set
+        {
+            if (item == value) return;
+            item = value;
+            ItemChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter]
+    public EventCallback<RewardDto> ItemChanged { get; set; }
+    [Parameter]
+    public string? Classify { get; set; }//chỉ có 3 loại (cá nhân, tập thể, quý): CN, TT, Q
+    [Parameter]
+    public string Label { get; set; } = "Hình thức";
+
+    private void ItemChangedHandle(ChangeEventArgs e)
+    => Item = items.First(x => x.RewardId == int.Parse(e.Value?.ToString() ?? string.Empty));
+
+    private IEnumerable<RewardDto> items = Enumerable.Empty<RewardDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var apiResult = await client.GetItemsAsync<ResultDto<RewardDto>>("Rewards/All");
+        if (apiResult != null && apiResult.Dtos != null)
+        {
+            items = apiResult.Dtos;
+            if (items.HasItems())
+            {
+                if (DefaultId.HasValue)
+                {
+                    Item = items!.First(x => x.RewardId == DefaultId);
+                }
+                else
+                    Item = items!.First();
+            }
+        }
+    }
+}

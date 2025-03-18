@@ -1,0 +1,55 @@
+﻿@using DongTaBhxh.WebUI.Components.Pages.Shared.Common
+@if (Items is null)
+{
+    <LoadPage />
+}
+else if (Items.HasItems())
+{
+    <table class="bordered">
+        <thead>
+            <tr>
+                <th scope="col">Họ tên</th>
+                <th scope="col">Ngày sinh</th>
+                <th scope="col">HSL</th>
+                <th scope="col">Đơn vị</th>
+                <th scope="col">Chi tiết khen thưởng</th>
+                <th scope="col">Cập nhật</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Items)
+            {
+                <tr>
+                   
+                    <td>@item.FullName</td>
+                    <td>@item.Birthdate?.ToVnFormat()</td>
+                    <td>@item.Salary</td>
+                    <td>
+                        @if(LinkDetail)
+                        {
+                            <FluentAnchor IconEnd="@(new Icons.Regular.Size16.List())" Href=@($"/Human/StaffOfDept/{item.DeptId}")>@item.DeptName</FluentAnchor>
+                        }
+                        else
+                        {
+                            @item.DeptName
+                        }
+                        
+                    </td>
+                    <td>
+                        <FluentAnchor IconEnd="@(new Icons.Regular.Size16.PreviewLink())" Href=@($"/Human/Details/QtktDetail/{item.EmployeeId}")>@TitleAndName.Detail)</FluentAnchor>
+                    </td>
+                    <td>
+                        <LinkEdit Url=@($"/Human/EditEmployee/{item.EmployeeId}") Text="@TitleAndName.Edit" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter] 
+    public IEnumerable<EmployeeDto>? Items { get; set; }
+    [Parameter] 
+    public bool LinkDetail { get; set; } = false;
+}

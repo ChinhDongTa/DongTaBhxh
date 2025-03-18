@@ -35,6 +35,7 @@ public partial class Employee
 
     public int? SortOrder { get; set; }
     public long? TelegramId { get; set; }
+    public bool Gender { get; set; }
 
     public virtual Department? Dept { get; set; }
 

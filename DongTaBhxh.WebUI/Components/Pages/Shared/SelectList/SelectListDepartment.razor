@@ -1,0 +1,67 @@
+﻿@inject IBaseHttpClient client;
+@rendermode InteractiveServer
+
+@if (items.HasItems())
+{
+    <FluentSelect Items="@items"
+                  @onchange="ItemChangedHandle"
+                  OptionValue="@(x=>x!.DepartmentId.ToString())"
+                  OptionText="@(x=>x!.Name)"
+                  SelectedOption="@Item"
+                  Label="@Label" />
+}
+else
+{
+    <FluentProgressRing />
+}
+
+@code {
+    [Parameter]
+    public int? DefaultId { get; set; }
+
+    private DepartmentDto? item;
+
+    [Parameter]
+    public required DepartmentDto Item
+    {
+        get
+        {
+            return item ?? new DepartmentDto();
+        }
+        set
+        {
+            if (item == value) return;
+            item = value;
+            ItemChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter]
+    public EventCallback<DepartmentDto> ItemChanged { get; set; }
+
+    [Parameter]
+    public string Label { get; set; } = "Đơn vị";
+
+    private void ItemChangedHandle(ChangeEventArgs e)
+    => Item = items.First(x => x.DepartmentId == int.Parse(e.Value?.ToString() ?? string.Empty));
+
+    private IEnumerable<DepartmentDto> items = Enumerable.Empty<DepartmentDto>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var apiResult = await client.GetItemsAsync<ResultDto<DepartmentDto>>("Departments/All");
+        if (apiResult != null && apiResult.Dtos != null)
+        {
+            items = apiResult.Dtos;
+            if (items.HasItems())
+            {
+                if (DefaultId.HasValue)
+                {
+                    Item = items!.First(x => x.DepartmentId == DefaultId);
+                }
+                else
+                    Item = items!.First();
+            }
+        }
+    }
+}

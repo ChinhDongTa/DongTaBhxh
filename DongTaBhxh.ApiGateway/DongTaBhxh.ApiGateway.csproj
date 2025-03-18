@@ -19,6 +19,22 @@
     <ProjectReference Include="..\..\DongTa Library\DongTa.ResponseResult\DongTa.ResponseResult.csproj" />
     <ProjectReference Include="..\DongTaBhxh.DataTranfer\DongTaBhxh.DataTranfer.csproj" />
     <ProjectReference Include="..\DongTaBhxh.Domain\DongTaBhxh.Domain.csproj" />
+    <ProjectReference Include="..\DongTaBhxh.StringDefault\DongTaBhxh.StringDefault.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Datasources\ReportDataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ReportDataSet.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Datasources\ReportDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ReportDataSet.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

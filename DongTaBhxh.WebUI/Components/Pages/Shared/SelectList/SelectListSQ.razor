@@ -1,0 +1,65 @@
+﻿@inject IBaseHttpClient client;
+@rendermode InteractiveServer
+
+@if (items.HasItems())
+{
+    <FluentSelect Items="@items"
+                  @onchange="ItemChangedHandle"
+                  OptionValue="@(x=>x!.SalaryCoefficientId.ToString())"
+                  OptionText="@(x=>x!.Description)"
+                  SelectedOption="@Item"
+                  Label="@Label" />
+}
+else
+{
+    <FluentProgressRing />
+}
+@code {
+    [Parameter]
+    public int? DefaultId { get; set; }
+
+    private SalaryCoefficientDto? item;
+
+    [Parameter]
+    public required SalaryCoefficientDto Item
+    {
+        get
+        {
+            return item ?? new SalaryCoefficientDto();
+        }
+        set
+        {
+            if (item == value) return;
+            item = value;
+            ItemChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter]
+    public EventCallback<SalaryCoefficientDto> ItemChanged { get; set; }
+
+    [Parameter]
+    public string Label { get; set; } = "Hsl";
+
+    private void ItemChangedHandle(ChangeEventArgs e)
+    => Item = items.First(x => x.SalaryCoefficientId == int.Parse(e.Value?.ToString() ?? string.Empty));
+
+    private IEnumerable<SalaryCoefficientDto> items = Enumerable.Empty<SalaryCoefficientDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var apiResult = await client.GetItemsAsync<ResultDto<SalaryCoefficientDto>>("SalaryCoefficients/All");
+        if (apiResult != null && apiResult.Dtos != null)
+        {
+            items = apiResult.Dtos;
+            if (items.HasItems())
+            {
+                if (DefaultId.HasValue)
+                {
+                    Item = items!.First(x => x.SalaryCoefficientId == DefaultId);
+                }
+                else
+                    Item = items!.First();
+            }
+        }
+    }
+}

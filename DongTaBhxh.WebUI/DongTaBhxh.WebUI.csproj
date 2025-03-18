@@ -20,4 +20,11 @@
 	<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.*-* " />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.*-* " />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DongTa Library\DongTa.BaseHttpClient\DongTa.BaseHttpClient.csproj" />
+    <ProjectReference Include="..\..\DongTa Library\DongTa.ResponseResult\DongTa.ResponseResult.csproj" />
+    <ProjectReference Include="..\..\DongTa Library\DongTa.TypeExtension\DongTa.TypeExtension.csproj" />
+    <ProjectReference Include="..\DongTaBhxh.DataTranfer\DongTaBhxh.DataTranfer.csproj" />
+    <ProjectReference Include="..\DongTaBhxh.StringDefault\DongTaBhxh.StringDefault.csproj" />
+  </ItemGroup>
 </Project>
