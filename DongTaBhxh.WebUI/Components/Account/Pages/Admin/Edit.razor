@@ -1,0 +1,115 @@
+﻿@page "/Account/Admin/Edit/{Id}"
+@rendermode RenderMode.InteractiveServer
+
+@using DongTaBhxh.Enums
+@using DongTaBhxh.WebUI.Data
+
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+
+@inject RoleManager<IdentityRole> roleManager
+@inject UserManager<AppUser> userManager
+
+<AuthorizeView Roles="admin">
+    <Authorized>
+        <LabelHeader Text="Quản lý user" />
+        <hr />
+        @if (userDto is null)
+        {
+            <LoadPage />
+        }
+        else
+        {
+            <AlertMessage Message="@message" />
+            <FluentStack>
+                <FluentTextField style="width:300px;" Value="@("Tài khoản: {@userDto.UserName}, Roles: { @userDto.Roles}")" ReadOnly />
+                <FluentTextField style="width:200px;" @bind-value="confirm" Placeholder="To comfirm, type 'yes'" />
+                <FluentButton IconStart="@(new Icons.Regular.Size16.Delete())" Appearance="Appearance.Accent" @onclick="DeleteUser">Delete User</FluentButton>
+            </FluentStack>
+            <hr style="margin-top:30px" />
+            <FluentStack>
+                <FluentTextField @bind-value="roleNameRemove" Placeholder="Type role name to remove" style="width:300px;" />
+                <FluentButton IconStart="@(new Icons.Regular.Size16.Delete())" Appearance="Appearance.Accent" @onclick="RemoveRole">Remove Role</FluentButton>
+            </FluentStack>
+            <hr style="margin-top:30px" />
+            <FluentStack>
+                <FluentTextField @bind-value="newRoleName" Placeholder="Type new role name" style="width:300px;" />
+                <FluentButton IconStart="@(new Icons.Regular.Size16.Add())" Appearance="Appearance.Accent" @onclick="AddRole">Add Role</FluentButton>
+                <FluentLabel Color="Color.Warning">@rolesName</FluentLabel>
+            </FluentStack>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <AlertMessage Message=@InfoMessage.NotAuthorized />
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Parameter] public string Id { get; set; } = string.Empty;
+    IdentityUserDto? userDto;
+    AppUser user = new AppUser();
+    private string? roleNameRemove;
+    private string? newRoleName;
+    private string? rolesName;
+    private string confirm = string.Empty;
+    private string? message;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        user = await userManager.FindByIdAsync(Id.ToString()) ?? new AppUser();
+        userDto = new IdentityUserDto(user.Id, user.UserName ?? string.Empty, string.Join(", ", await userManager.GetRolesAsync(user)), user.EmployeeId);
+        rolesName = string.Join(", ", await roleManager.Roles.OrderBy(r => r.Name).ToListAsync());
+        //StateHasChanged();
+
+    }
+
+    async Task AddRole()
+    {
+        if (!string.IsNullOrEmpty(newRoleName))
+        {
+            var result = await userManager.AddToRoleAsync(user, newRoleName.Trim());
+            //userManager.AddClaimAsync
+            if (result.Succeeded)
+            {
+                message = InfoMessage.ActionSuccess(CRUD.Create, "Role");
+            }
+            else
+                message = InfoMessage.ActionFailed(CRUD.Create, "Role");
+        }
+    }
+
+    async Task RemoveRole()
+    {
+        if (!string.IsNullOrEmpty(roleNameRemove))
+        {
+            var result = await userManager.RemoveFromRoleAsync(user, roleNameRemove.Trim());
+            if (result.Succeeded)
+            {
+                message = InfoMessage.ActionSuccess(CRUD.Delete, "Role");
+            }
+            else
+                message = InfoMessage.ActionFailed(CRUD.Delete, "Role");
+        }
+
+    }
+
+    async Task DeleteUser()
+    {
+        //string[] values = new string[] { "yes" };
+        var yes = confirm.ContainsAll(["yes"]);
+        if (yes)
+        {
+            confirm = "deleted";
+            var result = await userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                message = InfoMessage.ActionSuccess(CRUD.Delete, "user");
+            }
+            else
+                message = InfoMessage.ActionFailed(CRUD.Delete, "user");
+        }
+    }
+}
+
+   

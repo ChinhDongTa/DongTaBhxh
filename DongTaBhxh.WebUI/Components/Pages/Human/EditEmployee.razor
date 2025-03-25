@@ -1,0 +1,117 @@
+﻿@page "/Human/EditEmployee/{EmployeeId:int}"
+@using DongTaBhxh.WebUI.Components.Pages.Shared.SelectList
+@rendermode InteractiveServer
+@inject IBaseHttpClient client
+
+<PageTitle>@TitleAndName.TitleEditStaff</PageTitle>
+
+<LabelHeader Text="@TitleAndName.TitleEditStaff" />
+@if (employeeDto is null)
+{
+    <LoadPage />
+}
+else
+{
+    <div style="height:500px">
+        <AlertMessage Message="@Message" />
+        <FluentGrid>
+            <FluentGridItem>
+                <FluentTextField Label="Họ" @bind-Value="@employeeDto.FirstName" />
+                <FluentTextField Label="Tên" @bind-Value="@employeeDto.LastName" />
+                <FluentDatePicker @bind-Value="ngaySinh" Label="Ngày sinh" DayFormat="DayFormat.TwoDigit" Culture="@(System.Globalization.CultureInfo.GetCultureInfo("vi-VN"))" />
+                <FluentTextField Label="Số căn cước" @bind-Value="@employeeDto.IdentityCard" />
+                <SelectListSQ @bind-Item="scSelected" DefaultId="employeeDto.SalaryCoefficientId"  />
+                @* <FluentTextArea Cols="30" ReadOnly Label="Hệ số lương" @bind-Value="@employeeDto.SalaryCoefficientId" /> *@
+            </FluentGridItem>
+            <FluentGridItem>
+                <SelectListPosition @bind-Item="posSelected" DefaultId="employeeDto.PostId" />
+                <SelectListDepartment @bind-Item="deptSelected" DefaultId="employeeDto.DeptId" />
+                <FluentStack Orientation="Orientation.Vertical">
+                    <FluentNumberField @bind-Value="employeeDto.SortOrder" Label="Vị trí sắp xếp GĐ, PGĐ = 10, TP=20, CV=30,..." />
+                    <FluentCheckbox Label="Nghỉ việc ?" @bind-Value="@employeeDto.IsQuitJob" />
+                    <FluentCheckbox Label="Giới tính (nữ để trống)" @bind-Value="@employeeDto.Gender" />
+                </FluentStack>
+            </FluentGridItem>
+        </FluentGrid>
+        <div style="margin:30px">
+            <FluentButton Appearance=Appearance.Accent IconStart="@(new Icons.Regular.Size16.Save())" @onclick="SaveStaffBtn">@TitleAndName.BtnSave</FluentButton>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int EmployeeId { get; set; }
+    DepartmentDto? deptSelected;
+    PositionDto? posSelected;
+    EmployeeDto? employeeDto;
+    DateTime? ngaySinh;
+    IList<string>? errors = [];
+    string? Message;
+    SalaryCoefficientDto? scSelected;
+    //byte quarter;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (EmployeeId > 0)
+        {
+            var result = await client.GetItemsAsync<ResultDto<EmployeeDto>>($"Employees/GetOne/{EmployeeId}");
+            if (result != null && result.IsSuccess && result.Dto != null)
+            {
+                employeeDto = result.Dto;
+                ngaySinh = employeeDto.Birthdate;
+            }
+        }
+        else
+        {
+            employeeDto = new() { PostId = 10, Birthdate = DateTime.Now.AddYears(-24) };
+        }
+    }
+
+    async void SaveStaffBtn()
+    {
+        if (employeeDto is not null)
+        {
+            bool canPost = true;
+            if (posSelected is null)
+            {
+                errors?.Add(InfoMessage.Unselect("chức vụ"));
+                canPost = false;
+            }
+            else
+                employeeDto.PostId = posSelected.PositionId;
+
+            if (deptSelected is null)
+            {
+                errors?.Add(InfoMessage.Unselect("phòng ban"));
+                canPost = false;
+            }
+            else
+                employeeDto.DeptId = deptSelected.DepartmentId;
+            if(scSelected is null)
+            {
+                errors?.Add(InfoMessage.Unselect("hệ số lương"));
+            }
+            else
+                employeeDto.SalaryCoefficientId = scSelected.SalaryCoefficientId;
+
+            if (canPost)
+            {
+                employeeDto.Birthdate = ngaySinh!.Value;
+                if (EmployeeId > 0)
+                {
+                    var ok = await client.UpdateItemAsync($"Employees/Update/{EmployeeId}", employeeDto);
+                    Message = ok ? InfoMessage.Success : InfoMessage.PostFailed;
+                }
+                else
+                {
+                    var ok = await client.CreateItemAsync("Employees/Add", employeeDto);
+                    Message = ok ? InfoMessage.Success : InfoMessage.PostFailed;
+                }
+            }
+            else
+                Message = errors?.ToErrorString();
+            StateHasChanged();
+        }
+    }
+}

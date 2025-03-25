@@ -1,0 +1,56 @@
+﻿@if(Items.HasItems())
+{
+    <table class="bordered">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Họ tên</th>
+                <th>Kết quả</th>
+                <th>Tổng số công việc phải thực hiện trong quý</th>
+                <th>Số công việc đã thực hiện</th>
+                <th>Điểm tự chấm</th>
+                <th>Điểm xét duyệt</th>
+                <th>Ghi chú</th>
+                <th>Kết quả 3 quý trước</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Items)
+            {
+                <tr>
+                    <td style="text-align:center">@(stt++)</td>
+                    <td>@item.EmployeeName</td>
+                    <td style="text-align:center">@item.RewardName</td>
+                    <td style ="text-align:center">@item.TotalWork</td>
+                    <td style="text-align:center">@item.NumWorked</td>
+                    <td style="text-align:center">
+                        @item.SelfScore
+                    </td>
+                    <td style="text-align:center">
+                        @item.ResultScore
+                    </td>
+                    <td>
+                        @item.Note 
+                    </td>
+                    <td>
+                        <KetQuaXepLoai3QuyTruoc EmployeeId="@item.EmployeeId"></KetQuaXepLoai3QuyTruoc>
+                    </td>
+                    <td style="text-align:center">
+                        <LinkEdit Text="@TitleAndName.Edit" Url=@($"/XepLoaiQuy/EditCaNhan/{item.EmployeeId}") />
+                        @if(CanDelete)
+                        {
+                            <FluentAnchor Href="" IconStart="@(new Icons.Regular.Size16.Delete())">Not support</FluentAnchor>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    int stt = 1;
+    [Parameter] public IEnumerable<QuarterEmployeeRankDto> Items { get; set; } = Enumerable.Empty<QuarterEmployeeRankDto>();
+    [Parameter] public bool CanDelete { get; set; } = false;
+}

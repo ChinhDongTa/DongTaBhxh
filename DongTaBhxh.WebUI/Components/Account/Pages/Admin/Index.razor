@@ -1,0 +1,80 @@
+﻿@page "/Account/Admin/Index"
+@using DongTaBhxh.WebUI.Data
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+
+
+@*@inject RoleManager<IdentityRole> roleManager;*@
+@inject UserManager<AppUser> userManager
+@rendermode RenderMode.InteractiveServer
+
+<AuthorizeView Roles="admin">
+    <Authorized>
+        @if (userDtos is null)
+        {
+            <LoadPage />
+        }
+        else if (userDtos.HasItems())
+        {
+            <table class="bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">UserName</th>
+                        <th>Nhân viên</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in userDtos)
+                    {
+                        <tr>
+                            <td class="align-middle">
+                                @item.UserName
+                            </td>
+                            <td class="align-middle">
+                                <EmployeeInfo EmployeeId="@item.EmployeeId" />
+                            </td>
+                            <td class="align-middle">
+                                @item.Roles
+                            </td>
+                            <td class="align-middle">
+                                <LinkEdit Url=@string.Format("/Account/Admin/Edit/{0}",item.Id) Text="Edit" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">
+                            <strong>Tổng cổng: @userDtos.Count()</strong>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <AlertMessage Message=@InfoMessage.NotAuthorized />
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private IEnumerable<IdentityUserDto>? userDtos = Enumerable.Empty<IdentityUserDto>();
+    protected override async Task OnInitializedAsync()
+    {
+        userDtos = await GetIdentityUserDtos(await userManager.Users.OrderBy(u => u.UserName).ToListAsync());
+        StateHasChanged();
+    }
+
+    private async Task<IEnumerable<IdentityUserDto>> GetIdentityUserDtos(IEnumerable<AppUser> users)
+    {
+        var list = new List<IdentityUserDto>();
+        foreach (var item in users)
+        {
+            var dto = new IdentityUserDto(item.Id, item.UserName ?? string.Empty, string.Join(", ", await userManager.GetRolesAsync(item)), item.EmployeeId);
+            list.Add(dto);
+        }
+        return list;
+    }
+}

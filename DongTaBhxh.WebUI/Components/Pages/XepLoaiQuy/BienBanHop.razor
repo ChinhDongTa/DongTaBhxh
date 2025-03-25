@@ -1,0 +1,106 @@
+﻿@page "/XepLoaiQuy/BienBanHop"
+@using BlazorDownloadFile
+@using DongTaBhxh.WebUI.Data
+@using DongTaBhxh.Parameter.Reports
+@rendermode RenderMode.InteractiveServer
+@inject AuthenticationStateProvider authProvider
+@inject IBlazorDownloadFileService downloadService
+@inject IBaseHttpClient client
+
+<AuthorizeView>
+    <Authorized>
+        <AlertMessage Message="@message" />
+        <LabelHeader Text="Biên bản họp quý"/>
+        @if(bienBan is null)
+        {
+            <LoadPage />
+        }
+        else
+        {
+            <FluentGrid>
+                <FluentGridItem>
+                    <FluentTextArea Cols="40" @bind-Value=bienBan.ThoiGian Rows="3" Label="Thời gian"/>
+                    <FluentNumberField @bind-Value=bienBan.SoThanhVienVangMat Label="Vắng mặt" />
+                    <FluentTextField @bind-Value=bienBan.XepLoaiPhong Label="Xếp loại tập thể phòng" />
+                    <FluentTextField style="width:300px;" @bind-Value=bienBan.DeXuatKhenThuongTapThe Label="Đề nghị khen thưởng tập thể" />
+                </FluentGridItem>
+                <FluentGridItem>
+                    <FluentTextField @bind-Value=bienBan.ChuTri Label="Chủ trì" />
+                    <FluentTextField @bind-Value=bienBan.ChucVuChuTri Label="Chức vụ chủ trì" />
+                    <FluentTextField @bind-Value=bienBan.ThuKy Label="Thư ký" />
+                    <FluentTextField @bind-Value=bienBan.ChucVuThuKy Label="Chức vụ thư ký" />
+                    <FluentTextArea @bind-Value=bienBan.KetLuan Cols="60" Rows="2" Label="Kết luận"/>
+                </FluentGridItem>
+            </FluentGrid>
+            <div style="margin-top:20px">
+                <FluentButton IconStart="@(new Icons.Regular.Size20.ArrowDownload())" @onclick="BtnDownload">Tải file biên bản họp quý</FluentButton>
+                @* <Upload FileName="post from blazor.pdf" /> *@
+
+            </div>
+        }
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    BienBanHopQuyPara? bienBan = null;
+    string? message = null;
+    IList<string>? errors = null;
+    protected override async Task OnInitializedAsync()
+    {
+        bienBan = new BienBanHopQuyPara();
+        bienBan.UserId = await authProvider.GetUserIdAsync();
+        errors = new List<string>();
+        if (string.IsNullOrEmpty(bienBan.UserId))
+        {
+            errors.Add(InfoMessage.UserNotDound);
+        }
+        else
+        {
+            var chuTri = (await client.GetItemsAsync<ResultDto<EmployeeDto>>($"Employees/GetDeptHeadByUserId/{bienBan.UserId}"))?.Dto;
+            if (chuTri is not null)
+            {
+                bienBan.ChuTri = chuTri.FullName;
+                bienBan.ChucVuChuTri = chuTri.PositionName ?? "";
+                var now = DateTime.Now;
+                bienBan.ThoiGian = $"Hôm nay, vào lúc {now.Hour} giờ {now.Minute} ngày {now.Day} tháng {now.Month} năm {now.Year}, {chuTri.DeptName} tiến hành họp: ";
+                bienBan.KetLuan = $"Tập thể phòng thống nhất với nội dung trên. Biên bản kết thúc lúc {now.AddHours(3).Hour} giờ {now.AddHours(3).Minute} phút cùng ngày.";
+            }
+            else
+            {
+                errors.Add(InfoMessage.ApiCallFailed("Lấy thông tin chủ trì"));
+            }
+            var thuKy = (await client.GetItemsAsync<ResultDto<EmployeeDto>>($"Employees/GetByUserId{bienBan.UserId}"))?.Dto;
+            if (thuKy is not null)
+            {
+                bienBan.ThuKy = thuKy.FullName;
+                bienBan.ChucVuThuKy = thuKy.PositionName ?? "";
+            }
+            else
+            {
+                errors.Add(InfoMessage.ApiCallFailed("Lấy thông tin thư ký"));
+            }
+        }
+            message = errors.ToErrorString();
+            //StateHasChanged();
+    }
+
+    async Task BtnDownload()
+    {
+        if(bienBan is not null)
+        {
+            var stream = await client.PostAndDownloadAsync("Reports/BienBanHopQuy", bienBan);
+           
+            if (stream is not null)
+            {
+                //thành công
+                await downloadService.DownloadFile($"Bien ban hop xep loai quy", stream, "application/PDF");
+                message = InfoMessage.DownloadSuccess;
+            }
+            else
+            {
+                errors?.Add(InfoMessage.DownloadFailed);
+                message = errors.ToErrorString();
+            }
+        }
+    }
+}

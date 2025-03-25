@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Controllers\FileApi\Reports\BienBanHopQuy.rdlc" />
+    <None Remove="Controllers\FileApi\Reports\HuyenChamDiemPhong.rdlc" />
+    <None Remove="Controllers\FileApi\Reports\TongHopKetQuaCongTacQuy.rdlc" />
+    <None Remove="Controllers\FileApi\Reports\TongHopQuyPhuLuc4.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Controllers\FileApi\Reports\BienBanHopQuy.rdlc" />
+    <EmbeddedResource Include="Controllers\FileApi\Reports\HuyenChamDiemPhong.rdlc" />
+    <EmbeddedResource Include="Controllers\FileApi\Reports\TongHopKetQuaCongTacQuy.rdlc" />
+    <EmbeddedResource Include="Controllers\FileApi\Reports\TongHopQuyPhuLuc4.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+    <PackageReference Include="ReportViewerCore.NETCore" Version="15.1.26" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DongTa Library\DongTa.BaseDapper\DongTa.BaseDapper.csproj" />
+    <ProjectReference Include="..\..\DongTa Library\DongTa.QuarterInYear\DongTa.QuarterInYear.csproj" />
+    <ProjectReference Include="..\..\DongTa Library\DongTa.ResponseResult\DongTa.ResponseResult.csproj" />
+    <ProjectReference Include="..\..\DongTa Library\DongTa.TypeExtension\DongTa.TypeExtension.csproj" />
+    <ProjectReference Include="..\DongTaBhxh.DataTranfer\DongTaBhxh.DataTranfer.csproj" />
+    <ProjectReference Include="..\DongTaBhxh.Domain\DongTaBhxh.Domain.csproj" />
+    <ProjectReference Include="..\DongTaBhxh.Parameter\DongTaBhxh.Parameter.csproj" />
+    <ProjectReference Include="..\DongTaBhxh.StringDefault\DongTaBhxh.DefaultValue.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ExportQueryToExcelStream">
+      <HintPath>..\..\ExportListToExcel\ExportQueryToExcelStream\bin\Debug\net7.0\ExportQueryToExcelStream.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Datasources\ReportDataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ReportDataSet.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Datasources\ReportDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ReportDataSet.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>

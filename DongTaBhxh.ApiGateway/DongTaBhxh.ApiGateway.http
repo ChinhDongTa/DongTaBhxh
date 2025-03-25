@@ -1,0 +1,21 @@
+@DongTaBhxh.ApiGateway_HostAddress = https://localhost:7228
+
+GET {{DongTaBhxh.ApiGateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+@id=0
+PUT {{DongTaBhxh.ApiGateway_HostAddress}}/employees/Update/{{id}}
+Content-Type: application/json
+
+{
+  //EmployeeDto
+}
+
+###
+
+@userId=string
+GET {{DongTaBhxh.ApiGateway_HostAddress}}/report/test/{{userId}}
+
+###

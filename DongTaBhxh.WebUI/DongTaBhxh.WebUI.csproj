@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-DongTaBhxh.WebUI-4ba772fd-2981-423f-9a7e-f0dac2faad50</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BlazorDownloadFile" Version="2.4.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+	<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.*-* " />
+    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.*-* " />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DongTa Library\DongTa.BaseHttpClient\DongTa.BaseHttpClient.csproj" />
+    <ProjectReference Include="..\..\DongTa Library\DongTa.ResponseResult\DongTa.ResponseResult.csproj" />
+    <ProjectReference Include="..\..\DongTa Library\DongTa.TypeExtension\DongTa.TypeExtension.csproj" />
+    <ProjectReference Include="..\DongTaBhxh.DataTranfer\DongTaBhxh.DataTranfer.csproj" />
+    <ProjectReference Include="..\DongTaBhxh.Parameter\DongTaBhxh.Parameter.csproj" />
+    <ProjectReference Include="..\DongTaBhxh.StringDefault\DongTaBhxh.DefaultValue.csproj" />
+  </ItemGroup>
+</Project>

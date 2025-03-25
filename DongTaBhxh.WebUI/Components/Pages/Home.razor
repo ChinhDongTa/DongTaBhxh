@@ -1,0 +1,13 @@
+﻿@page "/"
+<AuthorizeView>
+    <Authorized>
+        <PageTitle>Home</PageTitle>
+
+        <h1>Hello, world!</h1>
+
+        Welcome to your new Fluent Blazor app.
+    </Authorized>
+    <NotAuthorized>
+        <AlertMessage Message=@InfoMessage.NotAuthorized />
+    </NotAuthorized>
+</AuthorizeView>

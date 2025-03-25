@@ -1,0 +1,29 @@
+﻿
+@*
+   EmployeeInfo Component hiển thị thông tin tóm tắt của nhân viên : hoten + phòng ban
+   StaffId: Mã nhân viên
+*@
+@rendermode RenderMode.InteractiveServer
+@inject IBaseHttpClient client
+@if (dto is null)
+{
+    <FluentProgressRing />
+}
+else
+{
+    <div>
+        @dto.FirstName - @dto.DeptName
+    </div>
+}
+
+@code {
+    [Parameter] public int EmployeeId { get; set; }
+    private EmployeeDto? dto;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var result = await client.GetItemsAsync<ResultDto<EmployeeDto>>($"Employees/GetOne/{EmployeeId}");
+        if (result != null && result.IsSuccess)
+            dto = result.Dto;
+    }
+}

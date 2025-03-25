@@ -1,0 +1,102 @@
+﻿@page "/XepLoaiQuy/DonVi"
+@rendermode RenderMode.InteractiveServer
+@inject IBaseHttpClient client
+
+<AuthorizeView Roles="tccb,admin">
+    <Authorized>
+        <LabelHeader Text="Danh sách xếp loại quý đơn vị" />
+        <AlertMessage Message="@message" />
+        <FluentGrid>
+            <FluentGridItem>
+                <FluentNumberField @bind-Value=quarter Label="Quý" />
+            </FluentGridItem>
+            <FluentGridItem>
+                <FluentNumberField @bind-Value=year Label="Năm" />
+            </FluentGridItem>
+            <FluentGridItem>
+                <FluentButton IconStart="@(new Icons.Regular.Size20.Search())" Appearance="Appearance.Accent" Style="margin-top:24px" @onclick="GetList"></FluentButton>
+            </FluentGridItem>
+        </FluentGrid>
+
+        @if (dtos is null)
+        {
+            <LoadPage />
+        }
+        else
+        {
+            <table class="bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Đơn vị</th>
+                        <th scope="col">Kết quả</th>
+                        <th scope="col">Điểm tự chấm</th>
+                        <th scope="col">Điểm xét duyệt</th>
+                        <th scope="col">Ghi chú</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in dtos)
+                    {
+                        <tr>
+                            <td>@item.DeptName</td>
+                            <td>@item.RewardName</td>
+                            <td>
+                                @item.SelfScore
+                            </td>
+                            <td>
+                                @item.ResultScore
+                            </td>
+                            <td>
+                                @item.Note
+                            </td>
+                            <td>
+                                <LinkEdit Text="@TitleAndName.Edit" Url=@($"/XepLoaiQuy/EditDonVi/{item.QuarterDepartmentRankId}") />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <AlertMessage Message=@InfoMessage.NotAuthorized />
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    IEnumerable<QuarterDepartmentRankDto>? dtos = Enumerable.Empty<QuarterDepartmentRankDto>();
+    string? message = null;
+    int year, quarter;
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var now = DateTime.Now.AddDays(ReadOnlyValue.SubDay);
+            quarter = DateTimeExtension.GetCurrentQuarter(now.Month);
+            year = now.Year;
+            dtos = await GetByTime(quarter, year);
+            //StateHasChanged();
+        }
+    }
+
+    async Task GetList()
+    {
+        dtos = null;
+        dtos = await GetByTime(quarter, year);
+        StateHasChanged();
+    }
+
+    private async Task<IEnumerable<QuarterDepartmentRankDto>?> GetByTime(int quarter, int year)
+    {
+        var result = (await client.GetItemsAsync<ResultDto<QuarterDepartmentRankDto>>($"QuarterDepartmentRanks/GetByQuarter/{quarter}/{year}"))?.Dtos;
+        if (result is null)
+        {
+            message = InfoMessage.ApiCallFailed("Lấy ds xếp loại quý đơn vị");
+            return Enumerable.Empty<QuarterDepartmentRankDto>();
+        }
+        else
+            return result;
+    }
+}

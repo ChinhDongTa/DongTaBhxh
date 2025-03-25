@@ -1,0 +1,856 @@
+﻿USE [master]
+GO
+/****** Object:  Database [DongTaBhxhDb]    Script Date: 25/03/2025 10:52:24 AM ******/
+CREATE DATABASE [DongTaBhxhDb]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'DongTaBhxhDb', FILENAME = N'E:\DATABASE\DongTaBhxhDb.mdf' , SIZE = 4096KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'DongTaBhxhDb_log', FILENAME = N'E:\DATABASE\DongTaBhxhDb_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+ALTER DATABASE [DongTaBhxhDb] SET COMPATIBILITY_LEVEL = 120
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [DongTaBhxhDb].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [DongTaBhxhDb] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET RECOVERY FULL 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET  MULTI_USER 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [DongTaBhxhDb] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+ALTER DATABASE [DongTaBhxhDb] SET DELAYED_DURABILITY = DISABLED 
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'DongTaBhxhDb', N'ON'
+GO
+USE [DongTaBhxhDb]
+GO
+/****** Object:  User [DongTa]    Script Date: 25/03/2025 10:52:24 AM ******/
+CREATE USER [DongTa] FOR LOGIN [DongTa] WITH DEFAULT_SCHEMA=[dbo]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [DongTa]
+GO
+/****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[__EFMigrationsHistory](
+	[MigrationId] [nvarchar](150) NOT NULL,
+	[ProductVersion] [nvarchar](32) NOT NULL,
+ CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY CLUSTERED 
+(
+	[MigrationId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetRoleClaims]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetRoleClaims](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[RoleId] [nvarchar](450) NOT NULL,
+	[ClaimType] [nvarchar](max) NULL,
+	[ClaimValue] [nvarchar](max) NULL,
+ CONSTRAINT [PK_AspNetRoleClaims] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetRoles]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetRoles](
+	[Id] [nvarchar](450) NOT NULL,
+	[Name] [nvarchar](256) NULL,
+	[NormalizedName] [nvarchar](256) NULL,
+	[ConcurrencyStamp] [nvarchar](max) NULL,
+ CONSTRAINT [PK_AspNetRoles] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUserClaims]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetUserClaims](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[UserId] [nvarchar](450) NOT NULL,
+	[ClaimType] [nvarchar](max) NULL,
+	[ClaimValue] [nvarchar](max) NULL,
+ CONSTRAINT [PK_AspNetUserClaims] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUserLogins]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetUserLogins](
+	[LoginProvider] [nvarchar](450) NOT NULL,
+	[ProviderKey] [nvarchar](450) NOT NULL,
+	[ProviderDisplayName] [nvarchar](max) NULL,
+	[UserId] [nvarchar](450) NOT NULL,
+ CONSTRAINT [PK_AspNetUserLogins] PRIMARY KEY CLUSTERED 
+(
+	[LoginProvider] ASC,
+	[ProviderKey] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUserRoles]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetUserRoles](
+	[UserId] [nvarchar](450) NOT NULL,
+	[RoleId] [nvarchar](450) NOT NULL,
+ CONSTRAINT [PK_AspNetUserRoles] PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC,
+	[RoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUsers]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetUsers](
+	[Id] [nvarchar](450) NOT NULL,
+	[EmployeeId] [int] NOT NULL,
+	[UserName] [nvarchar](256) NULL,
+	[NormalizedUserName] [nvarchar](256) NULL,
+	[Email] [nvarchar](256) NULL,
+	[NormalizedEmail] [nvarchar](256) NULL,
+	[EmailConfirmed] [bit] NOT NULL,
+	[PasswordHash] [nvarchar](max) NULL,
+	[SecurityStamp] [nvarchar](max) NULL,
+	[ConcurrencyStamp] [nvarchar](max) NULL,
+	[PhoneNumber] [nvarchar](max) NULL,
+	[PhoneNumberConfirmed] [bit] NOT NULL,
+	[TwoFactorEnabled] [bit] NOT NULL,
+	[LockoutEnd] [datetimeoffset](7) NULL,
+	[LockoutEnabled] [bit] NOT NULL,
+	[AccessFailedCount] [int] NOT NULL,
+ CONSTRAINT [PK_AspNetUsers] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[AspNetUserTokens]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[AspNetUserTokens](
+	[UserId] [nvarchar](450) NOT NULL,
+	[LoginProvider] [nvarchar](450) NOT NULL,
+	[Name] [nvarchar](450) NOT NULL,
+	[Value] [nvarchar](max) NULL,
+ CONSTRAINT [PK_AspNetUserTokens] PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC,
+	[LoginProvider] ASC,
+	[Name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Department]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Department](
+	[DepartmentId] [int] IDENTITY(1,1) NOT NULL,
+	[ShortName] [nvarchar](150) NOT NULL,
+	[Name] [nvarchar](300) NOT NULL,
+	[Score] [int] NULL,
+	[IsActivity] [bit] NOT NULL,
+	[Email] [nvarchar](100) NULL,
+	[Phone] [nvarchar](50) NULL,
+	[SortOrder] [int] NULL,
+	[LevelId] [int] NOT NULL,
+ CONSTRAINT [PK_Department] PRIMARY KEY CLUSTERED 
+(
+	[DepartmentId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Employee]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Employee](
+	[EmployeeId] [int] IDENTITY(1,1) NOT NULL,
+	[Email] [nvarchar](100) NULL,
+	[IdentityCard] [nvarchar](20) NULL,
+	[Phone] [nvarchar](20) NULL,
+	[Address] [nvarchar](200) NULL,
+	[FirstName] [nvarchar](80) NOT NULL,
+	[LastName] [nvarchar](20) NOT NULL,
+	[DeptId] [int] NULL,
+	[PostId] [int] NULL,
+	[SalaryCoefficientId] [int] NULL,
+	[AccountBank] [nvarchar](50) NULL,
+	[Birthdate] [date] NULL,
+	[IsQuitJob] [bit] NOT NULL,
+	[SortOrder] [int] NULL,
+	[TelegramId] [bigint] NULL,
+	[Gender] [bit] NULL,
+ CONSTRAINT [PK_Employee] PRIMARY KEY CLUSTERED 
+(
+	[EmployeeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Level]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Level](
+	[LevelId] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](20) NOT NULL,
+	[ShortName] [nvarchar](50) NULL,
+ CONSTRAINT [PK_Level] PRIMARY KEY CLUSTERED 
+(
+	[LevelId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Position]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Position](
+	[PositionId] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+	[ShortName] [nvarchar](10) NULL,
+	[Note] [nvarchar](200) NULL,
+ CONSTRAINT [PK_Position] PRIMARY KEY CLUSTERED 
+(
+	[PositionId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[QuarterDepartmentRank]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[QuarterDepartmentRank](
+	[QuarterDepartmentRankId] [int] IDENTITY(1,1) NOT NULL,
+	[DeptId] [int] NOT NULL,
+	[RewardId] [int] NOT NULL,
+	[Quarter] [tinyint] NOT NULL,
+	[Year] [int] NOT NULL,
+	[SelfScore] [int] NULL,
+	[ResultScore] [int] NULL,
+	[Note] [nvarchar](200) NULL,
+ CONSTRAINT [PK_QuarterDepartmentRank] PRIMARY KEY CLUSTERED 
+(
+	[QuarterDepartmentRankId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[QuarterEmployeeRank]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[QuarterEmployeeRank](
+	[QuarterEmployeeRankId] [int] IDENTITY(1,1) NOT NULL,
+	[EmployeeId] [int] NOT NULL,
+	[RewardId] [int] NOT NULL,
+	[Quarter] [tinyint] NOT NULL,
+	[Year] [int] NOT NULL,
+	[SelfScore] [int] NULL,
+	[ResultScore] [int] NULL,
+	[TotalWork] [int] NULL,
+	[NumWorked] [int] NULL,
+	[Note] [nvarchar](200) NULL,
+ CONSTRAINT [PK_QuarterEmployeeRank] PRIMARY KEY CLUSTERED 
+(
+	[QuarterEmployeeRankId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Reward]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Reward](
+	[RewardId] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+	[ShortName] [nvarchar](50) NULL,
+	[Type] [nvarchar](2) NULL,
+	[Classify] [nvarchar](4) NULL,
+ CONSTRAINT [PK_Reward] PRIMARY KEY CLUSTERED 
+(
+	[RewardId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SalaryCoefficient]    Script Date: 25/03/2025 10:52:24 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SalaryCoefficient](
+	[SalaryCoefficientId] [int] IDENTITY(1,1) NOT NULL,
+	[Rank] [tinyint] NOT NULL,
+	[Coeficient] [float] NOT NULL,
+	[Name] [nvarchar](8) NOT NULL,
+	[Description] [nvarchar](100) NULL,
+ CONSTRAINT [PK_SalaryCoefficient] PRIMARY KEY CLUSTERED 
+(
+	[SalaryCoefficientId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20250317061850_addEmployeeId', N'9.0.3')
+GO
+INSERT [dbo].[AspNetRoles] ([Id], [Name], [NormalizedName], [ConcurrencyStamp]) VALUES (N'503FA2D3-23C6-48B5-93C0-65456F680734', N'khtc', N'KHTC', NULL)
+GO
+INSERT [dbo].[AspNetRoles] ([Id], [Name], [NormalizedName], [ConcurrencyStamp]) VALUES (N'5d68e094-aeef-4eda-8bac-6d3ae58b3016', N'viewer', N'VIEWER', NULL)
+GO
+INSERT [dbo].[AspNetRoles] ([Id], [Name], [NormalizedName], [ConcurrencyStamp]) VALUES (N'689D9C76-23CC-411C-BFF1-9E275D821650', N'admin', N'ADMIN', NULL)
+GO
+INSERT [dbo].[AspNetRoles] ([Id], [Name], [NormalizedName], [ConcurrencyStamp]) VALUES (N'b4fc2e0b-b092-497e-8d9d-bfa168e19df3', N'tccb', N'TCCB', NULL)
+GO
+INSERT [dbo].[AspNetUsers] ([Id], [EmployeeId], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [PasswordHash], [SecurityStamp], [ConcurrencyStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEnd], [LockoutEnabled], [AccessFailedCount]) VALUES (N'19d51e6c-fdb9-4404-afe9-8079579cf713', 1, N'dtchinh@hotmail.com', N'DTCHINH@HOTMAIL.COM', N'dtchinh@hotmail.com', N'DTCHINH@HOTMAIL.COM', 1, N'AQAAAAIAAYagAAAAEPclUxbY3eIBfjrVzylJMN9N6mGBTzDO+5lHWmOglREshNYanrY/AVpTQeqCSnL26A==', N'5TONHI6POYQAZC673TDMQTXBJLSTQOJP', N'63a7d467-91a6-4e13-9f89-04a5fb44e34d', NULL, 0, 0, NULL, 1, 0)
+GO
+SET IDENTITY_INSERT [dbo].[Department] ON 
+GO
+INSERT [dbo].[Department] ([DepartmentId], [ShortName], [Name], [Score], [IsActivity], [Email], [Phone], [SortOrder], [LevelId]) VALUES (1, N'BGĐ', N'Ban giám đốc', 1000, 1, NULL, NULL, 1, 1)
+GO
+INSERT [dbo].[Department] ([DepartmentId], [ShortName], [Name], [Score], [IsActivity], [Email], [Phone], [SortOrder], [LevelId]) VALUES (2, N'VP', N'Văn phòng', 1000, 1, NULL, NULL, 2, 2)
+GO
+INSERT [dbo].[Department] ([DepartmentId], [ShortName], [Name], [Score], [IsActivity], [Email], [Phone], [SortOrder], [LevelId]) VALUES (3, N'KHTC', N'Kế hoạch-Tài chính', 1000, 1, NULL, NULL, 3, 2)
+GO
+SET IDENTITY_INSERT [dbo].[Department] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Employee] ON 
+GO
+INSERT [dbo].[Employee] ([EmployeeId], [Email], [IdentityCard], [Phone], [Address], [FirstName], [LastName], [DeptId], [PostId], [SalaryCoefficientId], [AccountBank], [Birthdate], [IsQuitJob], [SortOrder], [TelegramId], [Gender]) VALUES (1, NULL, N'230524923', NULL, NULL, N'Duong trong', N'Chính', 2, 5, 17, NULL, CAST(N'1990-12-15' AS Date), 0, 21, NULL, 1)
+GO
+INSERT [dbo].[Employee] ([EmployeeId], [Email], [IdentityCard], [Phone], [Address], [FirstName], [LastName], [DeptId], [PostId], [SalaryCoefficientId], [AccountBank], [Birthdate], [IsQuitJob], [SortOrder], [TelegramId], [Gender]) VALUES (2, NULL, N'365410254', NULL, NULL, N'Dông Tầ', N'Thiếu Soái', 2, 10, 6, NULL, CAST(N'1980-02-15' AS Date), 0, 30, NULL, 1)
+GO
+SET IDENTITY_INSERT [dbo].[Employee] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Level] ON 
+GO
+INSERT [dbo].[Level] ([LevelId], [Name], [ShortName]) VALUES (1, N'Quốc gia', N'QG')
+GO
+INSERT [dbo].[Level] ([LevelId], [Name], [ShortName]) VALUES (2, N'Tỉnh', N'T')
+GO
+INSERT [dbo].[Level] ([LevelId], [Name], [ShortName]) VALUES (3, N'Xã/phường', NULL)
+GO
+SET IDENTITY_INSERT [dbo].[Level] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Position] ON 
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (4, N'Trưởng phòng', N'TP', N'Trưởng phòng nghiệp vụ  BHXH tỉnh')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (5, N'Phó trưởng phòng', N'PTP', N'Phó trưởng phòng nghiệp vụ  BHXH tỉnh')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (8, N'Giám đốc', N'GĐ', N'Giám đốc đơn vị')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (9, N'Phó giám đốc', N'PGĐ', N'Phó giám đốc đơn vị')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (10, N'Chuyên viên', N'CV', N'')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (11, N'Cán sự', N'CS', N'')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (12, N'Lái xe', N'LX', N'')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (13, N'Thủ quỹ', N'TQ', N'Thủ quỹ')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (14, N'Kế toán trưởng', N'KTT', N'Kế toán trưởng')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (15, N'Phó trưởng phòng(PT)', N'PTP', N'Phó trưởng phòng phụ trách')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (16, N'Chuyên viên cao đẳng', N'CVCĐ', N'')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (17, N'Nhân viên', N'NV', N'Không xét tăng lương')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (18, N'Bác sĩ', N'BS', N'')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (19, N'Chiến sỹ', N'CS', N'Chiến sỹ trung đội tự vệ')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (20, N'Chỉ huy trưởng', N'CHT', N'Trung đội trưởng trung đội tự vệ')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (21, N'Chính trị viên trưởng', N'CTVT', N'Trung đội phó  trung đội tự vệ')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (22, N'Chính trị viên  phó', N'CTVP', N'Chính trị viên  phó')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (23, N'Tiểu đội trưởng', N'TĐT', N'Tiểu đội trưởng  trung đội tự vệ')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (24, N'Tiểu đội phó', N'TĐP', NULL)
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (26, N'Phó chỉ huy trưởng', N'PCHT', NULL)
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (27, N'Chánh Văn phòng', N'CVP', NULL)
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (28, N'Phó Chánh Văn phòng ', N'PCVP', NULL)
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (29, N'Nhân viên thử việc', N'NVTV', N'Được hưởng 85% lương và không xét tăng lương ')
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (30, N'Tổ trưởng', N'TT', NULL)
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (31, N'Phó Tổ trưởng', N'PTT', NULL)
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (32, N'Bảo vệ', N'BV', NULL)
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (33, N'Tạp vụ', N'TV', NULL)
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (34, N'Sinh viên', N'SV', NULL)
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (35, N'Thượng sỹ y tá', N'TSYT', NULL)
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (36, N'Kế toán', N'KT', NULL)
+GO
+INSERT [dbo].[Position] ([PositionId], [Name], [ShortName], [Note]) VALUES (37, N'Giáo viên', N'GV', NULL)
+GO
+SET IDENTITY_INSERT [dbo].[Position] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Reward] ON 
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (1, N'Khiển trách', N'KT', N'KL', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (2, N'Cảnh cáo', N'CC', N'KL', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (3, N'Hạ ngạch', N'HN', N'KL', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (4, N'Hạ bậc lương', N'HBL', N'KL', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (5, N'Buộc thôi việc', N'BTV', N'KL', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (8, N'Giấy khen UBND tỉnh Gia Lai', N'GKUBNDTGL', N'KT', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (9, N'Giấy khen Giám đốc BHXH tỉnh', N'GKGDBHXHT', N'KT', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (10, N'Chiến sỹ Thi đua cơ sở', N'CSTDCS', N'KT', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (11, N'Bằng khen BHXH Việt Nam', N'BKBHXHVN', N'KT', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (12, N'Bằng khen UBND tỉnh Gia Lai', N'BKUBNDTGL', N'KT', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (13, N'Cờ Thi đua của Chính phủ', N'CTDCCP', N'KT', N'TT')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (14, N'Cờ Thi đua của BHXH Việt Nam', N'CTDBHXHVN', N'KT', N'TT')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (15, N'Chiến sỹ Thi đua Ngành', N'CSTDN', N'KT', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (16, N'Tập thể Lao động xuất sắc', N'TTLDXS', N'KT', N'TT')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (17, N'Lao động tiên tiến', N'LDTT', N'KT', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (18, N'Tập thể Lao động tiên tiến', N'TTLDTT', N'KT', N'TT')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (19, N'Huân chương Lao động Hạng 3', N'HCLDH3', N'KT', N'TT')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (20, N'Bằng khen Thủ tướng', N'BKTT', N'KT', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (21, N'Sáng kiến cấp cơ sở', N'SKCCS', N'KT', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (22, N'A', N'A', N'KT', N'Q')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (23, N'B', N'B', N'KT', N'Q')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (24, N'C', N'C', N'KT', N'Q')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (25, N'D', N'D', N'KT', N'Q')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (27, N'Huân chương Lao động Hạng 2', N'HCLDH2', N'KT', N'TT')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (28, N'Huân chương Lao động Hạng 1', N'HCLDH1', N'KT', N'TT')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (33, N'Không xét', N'Không xét', N'KT', N'CN-Q')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (34, N'Huân chương lao động hạng 3', N'HCLDH3', N'KT', N'CN')
+GO
+INSERT [dbo].[Reward] ([RewardId], [Name], [ShortName], [Type], [Classify]) VALUES (35, N'Kỷ niệm chương vì sự nghiệp BHXH', N'KNCVSNBHXH', N'KT', N'CN')
+GO
+SET IDENTITY_INSERT [dbo].[Reward] OFF
+GO
+SET IDENTITY_INSERT [dbo].[SalaryCoefficient] ON 
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (1, 1, 2.1, N'CV(CĐ)/1', N'Bậc 1 CVCĐ 2,1')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (2, 2, 2.41, N'CV(CĐ)/2', N'Bậc 2 CVCĐ 2,41')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (3, 1, 2.34, N'CV/1', N'Bậc 1 CV 2,34')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (4, 2, 2.67, N'CV/2', N'Bậc 2 CV 2,67')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (5, 1, 1.86, N'CS/1', N'Bậc 1 CS 1,86')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (6, 3, 3, N'CV/3', N'Bậc 3 CV 3,0')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (7, 4, 3.33, N'CV/4', N'Bậc 4 CV 3,33')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (8, 3, 2.72, N'CV(CĐ)/3', N'Bậc 3 CVCĐ 2,72')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (9, 2, 2.06, N'CS/2', N'Bậc 2 CS 2,06')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (10, 5, 3.66, N'CV/5', N'Bậc 5 CV 3,66')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (11, 3, 2.26, N'CS/3', N'Bậc 3 CS 2,26')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (12, 4, 2.46, N'CS/4', N'Bậc 4 CS 2,46')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (13, 4, 3.03, N'CV(CĐ)/4', N'Bậc 4 CVCĐ 3,03')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (14, 5, 2.66, N'CS/5', N'Bậc 5 CS 2,66')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (15, 5, 3.34, N'CV(CĐ)/5', N'Bậc 5 CVCĐ 3,34')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (16, 6, 3.99, N'CV/6', N'Bậc 6 CV 3,99')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (17, 7, 4.32, N'CV/7', N'Bậc 7 CV 4,32')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (18, 8, 4.65, N'CV/8', N'Bậc 8 CV 4,65')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (19, 9, 4.98, N'CV/9', N'Bậc 9 CV 4,98')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (20, 1, 2.05, N'NVLX/1', N'Bậc 1 NVLX 2,05')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (21, 2, 2.23, N'NVLX/2', N'Bậc 2 NVLX 2,23')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (22, 3, 2.41, N'NVLX/3', N'Bậc 3 NVLX 2,41')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (23, 4, 2.59, N'NVLX/4', N'Bậc 4 NVLX 2,59')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (24, 5, 2.77, N'NVLX/5', N'Bậc 5 NVLX 2,77')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (25, 6, 2.95, N'NVLX/6', N'Bậc 6 NVLX 2,95')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (26, 7, 3.13, N'NVLX/7', N'Bậc 7 NVLX 3,13')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (27, 8, 3.31, N'NVLX/8', N'Bậc 8 NVLX 3,31')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (28, 9, 3.49, N'NVLX/9', N'Bậc 9 NVLX 3,49')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (29, 6, 2.86, N'CS/6', N'Bậc 6 CS 2,86')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (30, 7, 3.06, N'CS/7', N'Bậc 7 CS 3,06')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (31, 10, 3.67, N'NVLX/10', N'Bậc 10 NVLX 3,67')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (32, 11, 3.85, N'NVLX/11', N'Bậc 11 NVLX 3,85')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (33, 12, 4.03, N'NVLX/12', N'Bậc 12 NVLX 4,03')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (34, 8, 3.26, N'CS/8', N'Bậc 8 CS 3,26')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (35, 9, 3.46, N'CS/9', N'Bậc 9 CS 3,46')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (36, 10, 3.66, N'CS/10', N'Bậc 10 CS 3,66')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (37, 11, 3.86, N'CS/11', N'Bậc 11 CS 3,86')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (38, 12, 4.06, N'CS/12', N'Bậc 12 CS 4,06')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (39, 6, 3.65, N'CV(CĐ)/6', N'Bậc 6 CVCĐ 3,65')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (40, 7, 3.96, N'CV(CĐ)/7', N'Bậc 7 CVCĐ 3,96')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (41, 8, 4.27, N'CV(CĐ)/8', N'Bậc 8 CVCĐ 4,27')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (42, 9, 4.58, N'CV(CĐ)/9', N'Bậc 9 CVCĐ 4,58')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (43, 1, 4.4, N'CVC/1', N'Bậc 1 CVC 4,4')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (44, 2, 4.74, N'CVC/2', N'Bậc 2 CVC 4,74')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (45, 3, 5.08, N'CVC/3', N'Bậc 3 CVC 5,08')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (46, 4, 5.42, N'CVC/4', N'Bậc 4 CVC 5,42')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (47, 5, 5.76, N'CVC/5', N'Bậc 5 CVC 5,76')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (48, 6, 6.1, N'CVC/6', N'Bậc 6 CVC 6,1')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (49, 7, 6.44, N'CVC/7', N'Bậc 7 CVC 6,44')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (50, 8, 6.78, N'CVC/8', N'Bậc 8 CVC 6,78')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (52, 1, 1, N'NVPV/1', N'Bậc 1 NVPV 1,0')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (53, 2, 1.18, N'NVPV/2', N'Bậc 2 NVPV 1,18')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (54, 3, 1.36, N'NVPV/3', N'Bậc 3 NVPV 1,36')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (55, 4, 1.54, N'NVPV/4', N'Bậc 4 NVPV 1,54')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (56, 5, 1.72, N'NVPV/5', N'Bậc 5 NVPV 1,72')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (57, 6, 1.9, N'NVPV/6', N'Bậc 6 NVPV 1,9')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (58, 7, 2.08, N'NVPV/7', N'Bậc 7 NVPV 2,08')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (59, 8, 2.26, N'NVPV/8', N'Bậc 8 NVPV 2,26')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (60, 9, 2.44, N'NVPV/9', N'Bậc 9 NVPV 2,44')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (61, 10, 2.62, N'NVPV/10', N'Bậc 10 NVPV 2,62')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (62, 11, 2.8, N'NVPV/11', N'Bậc 11 NVPV 2,8')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (63, 12, 2.98, N'NVPV/12', N'Bậc 12 NVPV 2,98')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (64, 1, 1.5, N'TQ/1', N'Bậc 1  TQ 1,5')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (65, 2, 1.68, N'TQ/2', N'Bậc 2 TQ 1,68')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (66, 3, 1.86, N'TQ/3', N'Bậc 3 TQ 1,86')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (67, 4, 2.04, N'TQ/4', N'Bậc 4 TQ 2,04')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (68, 5, 2.22, N'TQ/5', N'Bậc 5 TQ 2,22')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (69, 6, 2.4, N'TQ/6', N'Bậc 6 TQ 2,4')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (70, 7, 2.58, N'TQ/7', N'Bậc 7 TQ 2,58')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (71, 8, 2.76, N'TQ/8', N'Bậc 8 TQ 2,76')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (72, 9, 2.94, N'TQ/9', N'Bậc 9 TQ 2,94')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (73, 10, 3.12, N'TQ/10', N'Bậc 10 TQ 3,12')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (74, 11, 3.3, N'TQ/11', N'Bậc 11 TQ 3,3')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (75, 12, 3.48, N'TQ/12', N'Bậc 12 TQ 3,48')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (76, 1, 1.5, N'NVBV/1', N'Bậc 1 NVBV 1,5')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (77, 2, 1.68, N'NVBV/2', N'Bậc 2 NVBV 1,86')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (78, 1, 6.2, N'CVCC/1', N'Bậc 1 CVCC 6,2')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (79, 2, 6.56, N'CVCC/2', N'Bậc 2 CVCC 6,56')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (80, 3, 6.92, N'CVCC/3', N'Bậc 3 CVCC 6,92')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (81, 4, 7.28, N'CVCC/4', N'Bậc 4 CVCC 7,28')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (82, 5, 7.64, N'CVCC/5', N'Bậc 5 CVCC 7,64')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (83, 6, 8.08, N'CVCC/6', N'Bậc 6 CVCC 8,08')
+GO
+INSERT [dbo].[SalaryCoefficient] ([SalaryCoefficientId], [Rank], [Coeficient], [Name], [Description]) VALUES (84, 3, 1.86, N'NVBV/3', N'Bậc 3 NVBV 1,86')
+GO
+SET IDENTITY_INSERT [dbo].[SalaryCoefficient] OFF
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_AspNetRoleClaims_RoleId]    Script Date: 25/03/2025 10:52:24 AM ******/
+CREATE NONCLUSTERED INDEX [IX_AspNetRoleClaims_RoleId] ON [dbo].[AspNetRoleClaims]
+(
+	[RoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [RoleNameIndex]    Script Date: 25/03/2025 10:52:24 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [RoleNameIndex] ON [dbo].[AspNetRoles]
+(
+	[NormalizedName] ASC
+)
+WHERE ([NormalizedName] IS NOT NULL)
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_AspNetUserClaims_UserId]    Script Date: 25/03/2025 10:52:24 AM ******/
+CREATE NONCLUSTERED INDEX [IX_AspNetUserClaims_UserId] ON [dbo].[AspNetUserClaims]
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_AspNetUserLogins_UserId]    Script Date: 25/03/2025 10:52:24 AM ******/
+CREATE NONCLUSTERED INDEX [IX_AspNetUserLogins_UserId] ON [dbo].[AspNetUserLogins]
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_AspNetUserRoles_RoleId]    Script Date: 25/03/2025 10:52:24 AM ******/
+CREATE NONCLUSTERED INDEX [IX_AspNetUserRoles_RoleId] ON [dbo].[AspNetUserRoles]
+(
+	[RoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [EmailIndex]    Script Date: 25/03/2025 10:52:24 AM ******/
+CREATE NONCLUSTERED INDEX [EmailIndex] ON [dbo].[AspNetUsers]
+(
+	[NormalizedEmail] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UserNameIndex]    Script Date: 25/03/2025 10:52:24 AM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [UserNameIndex] ON [dbo].[AspNetUsers]
+(
+	[NormalizedUserName] ASC
+)
+WHERE ([NormalizedUserName] IS NOT NULL)
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[AspNetRoleClaims]  WITH CHECK ADD  CONSTRAINT [FK_AspNetRoleClaims_AspNetRoles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[AspNetRoles] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetRoleClaims] CHECK CONSTRAINT [FK_AspNetRoleClaims_AspNetRoles_RoleId]
+GO
+ALTER TABLE [dbo].[AspNetUserClaims]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserClaims_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserClaims] CHECK CONSTRAINT [FK_AspNetUserClaims_AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[AspNetUserLogins]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserLogins_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserLogins] CHECK CONSTRAINT [FK_AspNetUserLogins_AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[AspNetUserRoles]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserRoles_AspNetRoles_RoleId] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[AspNetRoles] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_AspNetUserRoles_AspNetRoles_RoleId]
+GO
+ALTER TABLE [dbo].[AspNetUserRoles]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserRoles_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_AspNetUserRoles_AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[AspNetUserTokens]  WITH CHECK ADD  CONSTRAINT [FK_AspNetUserTokens_AspNetUsers_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[AspNetUserTokens] CHECK CONSTRAINT [FK_AspNetUserTokens_AspNetUsers_UserId]
+GO
+ALTER TABLE [dbo].[Department]  WITH CHECK ADD  CONSTRAINT [FK_Department_Level] FOREIGN KEY([LevelId])
+REFERENCES [dbo].[Level] ([LevelId])
+GO
+ALTER TABLE [dbo].[Department] CHECK CONSTRAINT [FK_Department_Level]
+GO
+ALTER TABLE [dbo].[Employee]  WITH CHECK ADD  CONSTRAINT [FK_Employee_Department] FOREIGN KEY([DeptId])
+REFERENCES [dbo].[Department] ([DepartmentId])
+GO
+ALTER TABLE [dbo].[Employee] CHECK CONSTRAINT [FK_Employee_Department]
+GO
+ALTER TABLE [dbo].[Employee]  WITH CHECK ADD  CONSTRAINT [FK_Employee_Position] FOREIGN KEY([PostId])
+REFERENCES [dbo].[Position] ([PositionId])
+GO
+ALTER TABLE [dbo].[Employee] CHECK CONSTRAINT [FK_Employee_Position]
+GO
+ALTER TABLE [dbo].[Employee]  WITH CHECK ADD  CONSTRAINT [FK_Employee_SalaryCoefficient] FOREIGN KEY([SalaryCoefficientId])
+REFERENCES [dbo].[SalaryCoefficient] ([SalaryCoefficientId])
+GO
+ALTER TABLE [dbo].[Employee] CHECK CONSTRAINT [FK_Employee_SalaryCoefficient]
+GO
+ALTER TABLE [dbo].[QuarterDepartmentRank]  WITH CHECK ADD  CONSTRAINT [FK_QuarterDepartmentRank_Department] FOREIGN KEY([DeptId])
+REFERENCES [dbo].[Department] ([DepartmentId])
+GO
+ALTER TABLE [dbo].[QuarterDepartmentRank] CHECK CONSTRAINT [FK_QuarterDepartmentRank_Department]
+GO
+ALTER TABLE [dbo].[QuarterDepartmentRank]  WITH CHECK ADD  CONSTRAINT [FK_QuarterDepartmentRank_Reward] FOREIGN KEY([RewardId])
+REFERENCES [dbo].[Reward] ([RewardId])
+GO
+ALTER TABLE [dbo].[QuarterDepartmentRank] CHECK CONSTRAINT [FK_QuarterDepartmentRank_Reward]
+GO
+ALTER TABLE [dbo].[QuarterEmployeeRank]  WITH CHECK ADD  CONSTRAINT [FK_QuarterEmployeeRank_Employee] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employee] ([EmployeeId])
+GO
+ALTER TABLE [dbo].[QuarterEmployeeRank] CHECK CONSTRAINT [FK_QuarterEmployeeRank_Employee]
+GO
+ALTER TABLE [dbo].[QuarterEmployeeRank]  WITH CHECK ADD  CONSTRAINT [FK_QuarterEmployeeRank_Reward] FOREIGN KEY([RewardId])
+REFERENCES [dbo].[Reward] ([RewardId])
+GO
+ALTER TABLE [dbo].[QuarterEmployeeRank] CHECK CONSTRAINT [FK_QuarterEmployeeRank_Reward]
+GO
+USE [master]
+GO
+ALTER DATABASE [DongTaBhxhDb] SET  READ_WRITE 
+GO

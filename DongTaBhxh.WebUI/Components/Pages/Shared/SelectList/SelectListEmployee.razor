@@ -1,0 +1,64 @@
+﻿@inject IBaseHttpClient client;
+
+@if (items.HasItems())
+{
+    <FluentSelect Items="@items"
+                  @onchange="ItemChangedHandle"
+                  OptionValue="@(x=>x!.Id.ToString())"
+                  OptionText="@(x=>x!.FullName)"
+                  SelectedOption="@Item"
+                  Label="@Label" />
+}
+else
+{
+    <FluentProgressRing />
+}
+@code {
+    [Parameter]
+    public int? DefaultId { get; set; }
+
+    private EmployeeDtoForListBox? item;
+
+    [Parameter]
+    public required EmployeeDtoForListBox Item
+    {
+        get
+        {
+            return item ?? new EmployeeDtoForListBox();
+        }
+        set
+        {
+            if (item == value) return;
+            item = value;
+            ItemChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter]
+    public EventCallback<EmployeeDtoForListBox> ItemChanged { get; set; }
+
+    [Parameter]
+    public string Label { get; set; } = "Nhân viên";
+
+    private void ItemChangedHandle(ChangeEventArgs e)
+    => Item = items.First(x => x.Id == int.Parse(e.Value?.ToString() ?? string.Empty));
+
+    private IEnumerable<EmployeeDtoForListBox> items = Enumerable.Empty<EmployeeDtoForListBox>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var apiResult = await client.GetItemsAsync<ResultDto<EmployeeDtoForListBox>>("Employees/GetEmployeeDtoForListBox");
+        if (apiResult != null && apiResult.Dtos != null)
+        {
+            items = apiResult.Dtos;
+            if (items.HasItems())
+            {
+                if (DefaultId.HasValue)
+                {
+                    Item = items!.First(x => x.Id == DefaultId);
+                }
+                else
+                    Item = items!.First();
+            }
+        }
+    }
+}

@@ -1,0 +1,65 @@
+﻿@page "/Human/Search"
+@inject IBaseHttpClient client
+@rendermode InteractiveServer
+@using DongTaBhxh.WebUI.Components.Pages.Shared.Common
+
+         <LabelHeader Text="Tra cứu nhân viên" />
+        <AlertMessage Message="@message" />
+        <FluentGrid>
+            <FluentGridItem>
+        <FluentTextField @bind-value="searchName" style="width:250px" Label="Họ tên" />
+            </FluentGridItem>
+            <FluentGridItem>
+        <FluentCheckbox @bind-Value="isQuitJob" style="margin-top:24px" Label="Bao gồm nghỉ việc" />
+            </FluentGridItem>
+            @*<SelectListDept @bind-Dept="dept"/> *@
+            <FluentGridItem >
+                <FluentButton Appearance="Appearance.Accent" style="margin-top:24px" @onclick="SearchBtn" IconStart="@(new Icons.Regular.Size20.Search())">
+                    @TitleAndName.BtnSearch
+                </FluentButton>
+            </FluentGridItem>
+            <FluentGridItem style="margin-top:24px" >
+        <LinkEdit Url="/Human/EditEmployee/0" Text="@TitleAndName.Add" />
+                </FluentGridItem >
+        </FluentGrid>
+
+        @if (employeeDtos is null)
+        {
+            <LoadPage />
+        }
+        else if (employeeDtos.HasItems())
+        {
+            <EmployeeList Items="employeeDtos" LinkDetail="true" />
+        }
+
+@code {
+    bool isQuitJob = false;
+    string? searchName;
+    string? message;
+    // DeptDto? dept;
+    //string urlTest = "none";
+    IEnumerable<EmployeeDto>? employeeDtos = Enumerable.Empty<EmployeeDto>();
+
+    async Task SearchBtn()
+    {
+        message = null;
+        if (!string.IsNullOrEmpty(searchName))
+        {
+            employeeDtos = null;
+            var result = await client.GetItemsAsync<ResultDto<EmployeeDto>>($"Employees/FindByName/{searchName}/{isQuitJob}");
+            if (result != null && result.IsSuccess && result.Dtos.HasItems())
+            {
+                employeeDtos = result.Dtos;
+            }
+            else
+            {
+                employeeDtos = Enumerable.Empty<EmployeeDto>();
+                message = result?.Message?.ToString();
+            }
+            StateHasChanged();
+        }
+        else
+            message = InfoMessage.InputEmpty;
+        StateHasChanged();
+    }
+}

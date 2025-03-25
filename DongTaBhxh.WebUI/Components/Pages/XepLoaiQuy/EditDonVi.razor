@@ -1,0 +1,105 @@
+﻿@page "/XeploaiQuy/EditDonVi/{Id:int}"
+@using System.Security.Claims
+@using DongTaBhxh.WebUI.Data
+@using DongTaBhxh.WebUI.Components.Pages.Shared.SelectList
+@inject IBaseHttpClient client
+@rendermode RenderMode.InteractiveServer
+@inject AuthenticationStateProvider authProvider
+
+<AuthorizeView>
+    <Authorized>
+        @if(dto is null)
+        {
+            <LoadPage />
+        }
+        else
+        {
+            <LabelHeader Text="@title"/>
+            <AlertMessage Message="@message" />
+            <FluentGrid>
+                <FluentGridItem>
+                    <SelectListReward @bind-Item="KqxlSelected" Classify="Q" Label="Kết quả xếp loại" DefaultId="@dto.RewardId" />
+                    <FluentNumberField @bind-Value="dto.SelfScore" Label="Điểm tự chấm" />
+                    <FluentNumberField @bind-Value="dto.ResultScore" Label="Điểm xét duyệt" />
+                    <FluentTextArea Cols=40 @bind-Value="dto.Note" Label="Ghi chú" />
+                </FluentGridItem>
+            </FluentGrid>
+               
+            <FluentStack style="margin:20px">
+                <FluentButton Appearance="Appearance.Accent" @onclick="SaveBtn">@TitleAndName.BtnSave</FluentButton>
+                @if(context.User.IsInRole("tccb")||context.User.IsInRole("admin"))
+                {
+                   <FluentAnchor IconStart="@(new Icons.Regular.Size16.ArrowStepBack())" Href="XeploaiQuy/DonVi">Bình xét đơn vị</FluentAnchor>
+                }
+            </FluentStack>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <AlertMessage Message=@InfoMessage.NotAuthorized />
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    QuarterDepartmentRankDto? dto = null;
+    RewardDto? KqxlSelected;
+    IList<string>? errors = new List<string>();
+    string? message = null;
+    string? title = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id > 0)//Chức năng bình xét của TCCB
+        {
+            dto = (await client.GetItemsAsync<ResultDto<QuarterDepartmentRankDto>>($"QuarterDepartmentRanks/GetOne/{Id}"))?.Dto;
+            if (dto is null)
+            {
+                //title = $"Xếp loại quý {dto.QuarterId} năm {dto.ReceivedYear} của {dto.DeptName}";
+                message = InfoMessage.DownloadFailed;
+            }
+            else
+                title = $"Bình xét kết quả xếp loại quý {dto.Quarter} năm {dto.Year} của {dto.DeptName}";
+        }
+        else
+        {
+            string? userId = await authProvider.GetUserIdAsync();
+            if (string.IsNullOrEmpty(userId))
+            {
+                message = InfoMessage.UserNotDound;
+            }
+            else
+            {
+                dto = (await client.GetItemsAsync<ResultDto<QuarterDepartmentRankDto>>($"QuarterDepartmentRanks/GetCurrentByUserId{userId}"))?.Dto;
+                if (dto is null)
+                {
+                    //title = $"Xếp loại quý {dto.QuarterId} năm {dto.ReceivedYear} của {dto.DeptName}";
+                    message = InfoMessage.DownloadFailed;
+                }
+                else
+                    title = $"Cập nhật kết quả xếp loại quý {dto.Quarter} năm {dto.Year} của {dto.DeptName}";
+            }
+        }
+    }
+
+    async Task SaveBtn()
+    {
+        if (dto is not null)
+        {
+            if (KqxlSelected is not null)
+            {
+                dto.RewardId = KqxlSelected.RewardId;
+                //errors?.Add(InfoMessage.Unselect("kết quả xếp loại"));
+            }
+
+            if (errors.HasItems())
+            {
+                message = errors.ToErrorString();
+            }
+            else
+            {
+                var ok = await client.UpdateItemAsync($"QuarterDepartmentRanks/Update/{Id}", dto);
+                message = ok ? InfoMessage.Success : InfoMessage.PostFailed;
+            }
+        }
+    }
+}

@@ -1,0 +1,12 @@
+﻿@* 
+    Tiêu đề một trang 
+    Text: nộ dung tiều đề
+*@
+<div style="margin-bottom:20px">
+    <FluentLabel Color="Color.Accent" Typo="Typography.H3">@Text</FluentLabel>
+</div>
+
+
+@code {
+    [Parameter] public string Text { get; set; } = string.Empty;
+}

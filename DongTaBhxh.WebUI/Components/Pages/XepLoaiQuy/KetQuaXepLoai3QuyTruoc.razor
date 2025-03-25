@@ -1,0 +1,26 @@
+﻿@* Kết quả xếp loại cá nhân 3 quý trước quý hiện tại *@
+@inject IBaseHttpClient client
+@rendermode RenderMode.InteractiveServer
+
+@if (dto is null)
+{
+    <FluentProgressRing />
+}
+else
+{
+    <div>
+        @dto.TotalReward
+    </div>
+}
+
+@code {
+    [Parameter] public int EmployeeId { get; set; }
+    private Result3QuarterEmployeeRankDto? dto;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var result = await client.GetItemsAsync<ResultDto<Result3QuarterEmployeeRankDto>>($"QuarterEmployeeRanks/Get3QuarterBeforeByEmployeeId/{EmployeeId}");
+        if (result != null && result.IsSuccess)
+            dto = result.Dto;
+    }
+}

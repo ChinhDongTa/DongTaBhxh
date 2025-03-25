@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DongTa Library\DongTa.QuarterInYear\DongTa.QuarterInYear.csproj" />
+    <ProjectReference Include="..\DongTaBhxh.Enums\DongTaBhxh.Enums.csproj" />
+  </ItemGroup>
+
+</Project>

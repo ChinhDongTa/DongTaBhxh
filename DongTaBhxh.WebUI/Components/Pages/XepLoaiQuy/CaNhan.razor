@@ -1,0 +1,67 @@
+﻿@* Xếp loại quý cho cá nhân *@
+@page "/XeploaiQuy/CaNhan"
+@using System.Security.Claims
+@using DongTaBhxh.WebUI.Data
+
+@rendermode RenderMode.InteractiveServer
+@inject AuthenticationStateProvider authProvider
+@inject IBaseHttpClient client
+
+<AuthorizeView>
+    <Authorized>
+        <div class="row">
+            <LabelHeader Text="@title"/>
+            <AlertMessage Message="@message" />
+            @if (list is null)
+            {
+                <LoadPage />
+            }
+            else
+            {
+                <DetailTable Items="list" />
+                <FluentStack style="margin-top:20px;">
+                    <FluentAnchor Href="@urlTongHopCongTacQuy">Tổng hợp kết quả công tác quý của công chức, viên chức (Phụ luc IV)"</FluentAnchor>
+                    <FluentAnchor Href="">Bảng tự chấm điểm của Thủ trưởng đơn vị</FluentAnchor>
+                    <FluentAnchor Href="/XepLoai/Quy/BienBanHop">Biên bản họp</FluentAnchor>
+                    <FluentAnchor Href="">Bảng điểm đơn vị</FluentAnchor>
+                </FluentStack>
+            }
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <AlertMessage Message=@InfoMessage.NotAuthorized />
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    IEnumerable<QuarterEmployeeRankDto>? list = null;
+    string? message=null;
+    string? title = null;
+    string? urlTongHopCongTacQuy;
+    protected override async Task OnInitializedAsync()
+    {
+        
+            string? userId = await authProvider.GetUserIdAsync();
+            if (string.IsNullOrEmpty(userId))
+            {
+                message = InfoMessage.UserNotDound;
+            }
+            else
+            {
+            list = (await client.GetItemsAsync<ResultDto<QuarterEmployeeRankDto>>($"QuarterEmployeeRanks/GetCurrentByUserId/{userId}"))?.Dtos;
+                if (list.HasItems())
+                {
+                    
+                    var one = list!.First();
+                    urlTongHopCongTacQuy = $"/XepLoaiquy/BangTongHopKetQuaCongTacQuy/{one.Quarter}/{one.Year}";
+                    var dept = (await client.GetItemsAsync<ResultDto<DepartmentDto>>($"Departments/GetOneByEmployeeId/{one.EmployeeId}"))?.Dto;
+                    title = $"Bảng xếp loại cá nhân quý {one.Quarter} năm {one.Year} của {dept?.ShortName}";
+                }
+                else
+                    message = InfoMessage.DownloadFailed;
+            }
+            //StateHasChanged();
+        
+    }
+}
