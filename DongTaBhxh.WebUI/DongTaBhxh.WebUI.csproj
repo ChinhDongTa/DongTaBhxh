@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -27,6 +27,5 @@
     <ProjectReference Include="..\..\DongTa Library\DongTa.TypeExtension\DongTa.TypeExtension.csproj" />
     <ProjectReference Include="..\DongTaBhxh.DataTranfer\DongTaBhxh.DataTranfer.csproj" />
     <ProjectReference Include="..\DongTaBhxh.Parameter\DongTaBhxh.Parameter.csproj" />
-    <ProjectReference Include="..\DongTaBhxh.StringDefault\DongTaBhxh.DefaultValue.csproj" />
   </ItemGroup>
 </Project>

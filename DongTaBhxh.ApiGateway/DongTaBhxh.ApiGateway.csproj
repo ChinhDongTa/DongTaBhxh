@@ -38,7 +38,6 @@
     <ProjectReference Include="..\DongTaBhxh.DataTranfer\DongTaBhxh.DataTranfer.csproj" />
     <ProjectReference Include="..\DongTaBhxh.Domain\DongTaBhxh.Domain.csproj" />
     <ProjectReference Include="..\DongTaBhxh.Parameter\DongTaBhxh.Parameter.csproj" />
-    <ProjectReference Include="..\DongTaBhxh.StringDefault\DongTaBhxh.DefaultValue.csproj" />
   </ItemGroup>
 
   <ItemGroup>
